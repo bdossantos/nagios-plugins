@@ -77,3 +77,5 @@ $2
 ```bash
 check_max_open_files.sh 75 90
 ```
+
+## Check last user
