@@ -79,3 +79,21 @@ check_max_open_files.sh 75 90
 ```
 
 ## Check last user
+
+## Check CouchDB
+
+### Options
+
+```
+-H/--hostname)
+  CouchDB host
+
+-P/--port)
+  CouchDB port
+```
+
+### Usage
+
+```bash
+check_couchdb.sh -H 127.0.0.1 -P 5984
+```
