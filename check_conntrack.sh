@@ -9,25 +9,26 @@ if [ $# != 2 ]; then
 fi
 
 conntrack_count=$(find /proc/sys -name *conntrack_count | head -n 1)
-max_file=$(find /proc/sys -name *conntrack_max | head -n 1)
-if [ -z $max_file ] || [ -z $conntrack_count ]; then
+max_value=$(find /proc/sys -name *conntrack_max | head -n 1)
+if [ -z $max_value ] || [ -z $conntrack_count ]; then
     echo "ERROR - Can't find *conntrack_count"
     exit 3
 fi
 
 conntrack_count=$(cat $conntrack_count | head -n 1)
-max_file=$(cat $max_file | head -n 1)
-warn=$(expr $max_file \* $1 \/ 100)
-crit=$(expr $max_file \* $2 \/ 100)
+max_value=$(cat $max_value | head -n 1)
+warn=$(expr $max_value \* $1 \/ 100)
+crit=$(expr $max_value \* $2 \/ 100)
+performance_data="conntrack_table=$conntrack_count;$warn;$crit;0;$max_value"
 
 if [ $conntrack_count -gt $warn ]; then
-    echo "CRITICAL - conntrack table usage : $conntrack_count / $max_file"
+    echo "CRITICAL - conntrack table usage : $conntrack_count / $max_value | $performance_data"
     exit 2
 elif [ $conntrack_count -gt $warn -a $conntrack_count -lt $warn ]; then
-    echo "WARNING - conntrack table usage : $conntrack_count / $max_file"
+    echo "WARNING - conntrack table usage : $conntrack_count / $max_value | $performance_data"
     exit 1
 elif [ $conntrack_count -lt $warn ]; then
-    echo "OK - conntrack table usage : $conntrack_count / $max_file"
+    echo "OK - conntrack table usage : $conntrack_count / $max_value | $performance_data"
     exit 0
 fi
 
