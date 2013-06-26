@@ -18,15 +18,16 @@ fi
 
 warn=$(expr $max_open_files \* $1 \/ 100)
 crit=$(expr $max_open_files \* $2 \/ 100)
+performance_data="max_open_files=$opened_files;$warn;$crit;0;$max_open_files"
 
 if [ $opened_files -gt $crit ]; then
-    echo "CRITICAL - $opened_files / $max_open_files"
+    echo "CRITICAL - $opened_files / $max_open_files | $performance_data"
     exit 2
 elif [ $opened_files -gt $warn -a $opened_files -lt $crit ]; then
-    echo "WARNING - $opened_files / $max_open_files"
+    echo "WARNING - $opened_files / $max_open_files | $performance_data"
     exit 1
 else
-    echo "OK - $opened_files / $max_open_files"
+    echo "OK - $opened_files / $max_open_files | $performance_data"
     exit 0
 fi
 
