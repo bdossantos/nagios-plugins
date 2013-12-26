@@ -8,7 +8,7 @@ if [ $# != 2 ]; then
     exit 3
 fi
 
-conntrack_count=$(find /proc/sys -name *conntrack_count | head -n 1)
+conntrack_count=$(find /proc/sys -type f -name *conntrack_count | head -n 1)
 max_value=$(find /proc/sys -name *conntrack_max | head -n 1)
 if [ -z $max_value ] || [ -z $conntrack_count ]; then
     echo "ERROR - Can't find *conntrack_count"
