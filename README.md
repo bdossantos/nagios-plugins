@@ -97,3 +97,18 @@ check_max_open_files.sh 75 90
 ```bash
 check_couchdb.sh -H 127.0.0.1 -P 5984
 ```
+
+## Check MySQL
+
+### Options
+
+```
+-u/--user)
+  The user name
+
+-p/--password)
+  User password
+
+-f/--defaults-file)
+  MySQL defaults-file path
+```
