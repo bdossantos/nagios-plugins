@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
-output=$(dmesg -T -l crit,alert,emerg 2>/dev/null || dmesg || exit 3)
+output=$(dmesg -T -l err,crit,alert,emerg 2>/dev/null || dmesg || exit 3)
 if test ! -z "$output"; then
   filtered_output=$({
     echo $output | egrep -o -i \
-    'Hardware Error|I/O error|hard resetting link|DRDY ERR'
+    'Hardware Error|I/O error|hard resetting link|DRDY ERR|Out of memory|Killed process'
   })
 
   if test ! -z "$filtered_output"; then
