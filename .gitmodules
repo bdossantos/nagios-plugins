@@ -1,3 +1,6 @@
 [submodule "mongodb"]
 	path = mongodb
 	url = https://github.com/mzupan/nagios-plugin-mongodb
+[submodule "raid"]
+	path = raid
+	url = https://github.com/glensc/nagios-plugin-check_raid
