@@ -16,29 +16,29 @@
 #       Critical value (KB/s)
 
 while test -n "$1"; do
-    case $1 in
-        --interface|-iface)
-            interface=$2
-            shift
-            ;;
-        --sleep|-s)
-            sleep=$2
-            shift
-            ;;
-        --warning|-w)
-            warn=$2
-            shift
-            ;;
-        --critical|-c)
-            crit=$2
-            shift
-            ;;
-        *)
-            echo "Unknown argument: $1"
-            exit 3
-            ;;
-    esac
-    shift
+  case $1 in
+    --interface|-iface)
+      interface=$2
+      shift
+      ;;
+    --sleep|-s)
+      sleep=$2
+      shift
+      ;;
+    --warning|-w)
+      warn=$2
+      shift
+      ;;
+    --critical|-c)
+      crit=$2
+      shift
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      exit 3
+      ;;
+  esac
+  shift
 done
 
 warn=${warn:=5000}
@@ -59,16 +59,16 @@ rx_kbps=$(expr $rx_bps / 1024)
 
 status="tx $1: $tx_kbps kb/s rx $1: $rx_kbps kb/s"
 if [ $rx_kbps -ge $warn ] || [ $tx_kbps -ge $warn ]; then
-    if [ $rx_kbps -ge $crit ] || [ $tx_kbps -ge $crit ]; then
-        exit_status=2
-        echo "CRITICAL - $status"
-    else
-        exit_status=1
-        echo "WARNING - $status"
-    fi
+  if [ $rx_kbps -ge $crit ] || [ $tx_kbps -ge $crit ]; then
+    exit_status=2
+    echo "CRITICAL - $status"
+  else
+    exit_status=1
+    echo "WARNING - $status"
+  fi
 else
-    exit_status=0
-    echo "OK - $status"
+  exit_status=0
+  echo "OK - $status"
 fi
 
 exit ${exit_status:=3}
