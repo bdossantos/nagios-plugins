@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Copyright bitly, Aug 2011
 # written by Jehiah Czebotar
 #

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Check number of opened files
 
 if [ $# != 2 ]; then

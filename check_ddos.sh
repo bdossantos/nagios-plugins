@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Check DDOS attack (SYN FLOOD) plugin for Nagios
 #
 # Options :

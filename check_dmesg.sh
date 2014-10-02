@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 output=$(dmesg -T -l err,crit,alert,emerg 2>/dev/null || dmesg || exit 3)
 if test ! -z "$output"; then

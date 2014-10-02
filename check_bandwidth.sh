@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Check bandwidth plugin for Nagios
 #
 # Options :

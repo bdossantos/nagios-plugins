@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Check conntrack table usage
 
 if [ $# != 2 ]; then

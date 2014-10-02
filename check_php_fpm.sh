@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # This plugin is based on this work :
 # https://github.com/mabitt/mab-nagios-plugins/blob/master/check_phpfpm.sh
 
