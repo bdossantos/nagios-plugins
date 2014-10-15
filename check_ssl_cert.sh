@@ -46,8 +46,8 @@ done
 host=${host:=localhost}
 port=${port:=443}
 timeout=${timeout:=30s}
-warn=${warn:=30}
-crit=${crit:=15}
+warn=${warn:=15}
+crit=${crit:=7}
 
 expire=$(timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2)
 parsed_expire=$(date -d "$expire" +%s)
