@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Check application health
+#
+# eg : check_application_health.sh \
+#         -w '/var/www/myapp.io/current' \
+#         -c 'app/console monitor:health'
+#
+# Options :
+#
+#   -w/--webroot)
+#       Path to webroot
+#
+#   -c/--command)
+#       Healthcheck command
+#
+#   -t/--timeout)
+#       timeout, eg: 10s
+
+while test -n "$1"; do
+  case $1 in
+    -w | --webroot)
+      webroot=$2
+      ;;
+    -c | --command)
+      command=$2
+      ;;
+    -t | --timeout)
+      timeout=$2
+      ;;
+  esac
+  shift
+done
+
+timeout=${timeout:=30s}
+
+if test -z "$webroot" || test -z "$command"; then
+  echo "CRITICAL - undefined webroot or command"
+  exit 2
+fi
+
+if test ! -d "$webroot"; then
+  echo "CRITICAL - webroot directory does not exist"
+  exit 2
+fi
+
+cd $webroot
+health=$(timeout $timeout $command)
+
+if test $? -ne 0; then
+  echo "CRITICAL - The application is sick, `${command}` return code != 0 !"
+  echo "$health"
+  exit 2
+fi
+
+echo "OK - The application is healthy"
+echo "$health"
+exit 0
