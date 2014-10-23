@@ -3,7 +3,7 @@
 #
 # eg : check_application_health.sh \
 #         -w '/var/www/myapp.io/current' \
-#         -c 'app/console monitor:health'
+#         -c 'php app/console monitor:health'
 #
 # Options :
 #
