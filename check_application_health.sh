@@ -44,7 +44,7 @@ if test ! -d "$webroot"; then
 fi
 
 cd $webroot
-health=$(timeout $timeout $command)
+health=$(timeout -k $timeout $timeout $command)
 
 if test $? -ne 0; then
   echo "CRITICAL - The application is sick, `${command}` return code != 0 !"
