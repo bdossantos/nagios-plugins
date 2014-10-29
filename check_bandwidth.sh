@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # Check bandwidth plugin for Nagios
 #
 # Options :
@@ -14,6 +15,10 @@
 #
 #   -c/--critical)
 #       Critical value (KB/s)
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 while test -n "$1"; do
   case $1 in

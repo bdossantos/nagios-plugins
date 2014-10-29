@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
+#
 # Check number of opened files
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 if [ $# != 2 ]; then
   echo "Syntax: check_max_open_files.sh <warn percent> <crit percent>"

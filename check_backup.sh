@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
+#
 # Quick and dirty script to check if backup failed, in log we trust.
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 while test -n "$1"; do
   case $1 in

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # Check MySQL plugin for Nagios
 #
 # Options :
@@ -11,6 +12,9 @@
 #
 #   -f/--defaults-file)
 #       MySQL defaults-file path
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
 #
 
 if test "$#" -lt 1; then

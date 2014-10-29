@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# Check dmesg output
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 output=$(dmesg -T -l err,crit,alert,emerg 2>/dev/null || dmesg || exit 3)
 if test ! -z "$output"; then

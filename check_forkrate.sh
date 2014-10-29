@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+#
 # Copyright bitly, Aug 2011
 # written by Jehiah Czebotar
 #
 # Adapted from https://gist.github.com/internetstaff/11269560
+#
 
 DATAFILE='/tmp/nagios_check_forkrate.dat'
 VALID_INTERVAL=60

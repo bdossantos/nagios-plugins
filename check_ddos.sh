@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # Check DDOS attack (SYN FLOOD) plugin for Nagios
 #
 # Options :
@@ -7,6 +8,10 @@
 #
 #   -c/--critical)
 #       Critical value (number of SYN_RECV)
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 while test -n "$1"; do
   case $1 in

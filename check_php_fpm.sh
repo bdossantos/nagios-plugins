@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
+#
+# Check php-fpm status
+#
 # This plugin is based on this work :
 # https://github.com/mabitt/mab-nagios-plugins/blob/master/check_phpfpm.sh
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 PROGNAME=`basename $0`
 hostname='127.0.0.1'

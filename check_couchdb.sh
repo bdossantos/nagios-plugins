@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # Check CouchDB plugin for Nagios
 #
 # Options :
@@ -7,6 +8,10 @@
 #
 #   -P/--port)
 #       CouchDB port
+#
+# (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/nagios-plugins
+#
 
 while test -n "$1"; do
   case "$1" in
