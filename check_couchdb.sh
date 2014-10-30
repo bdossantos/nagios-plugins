@@ -13,7 +13,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case "$1" in
     --hostname|-H)
       hostname=$2
@@ -34,8 +34,8 @@ done
 hostname=${hostname:=127.0.0.1}
 port=${port:=5984}
 
-response=$(curl -s http://${hostname}:${port})
-if [[ "$response" =~ "Welcome" ]]; then
+response=$(curl -s "http://${hostname}:${port}")
+if [[ "$response" =~ Welcome ]]; then
   echo "CouchDB OK"
   exit 0
 else
