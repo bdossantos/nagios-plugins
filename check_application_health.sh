@@ -21,7 +21,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
     -w | --webroot)
       webroot=$2
@@ -38,21 +38,21 @@ done
 
 timeout=${timeout:=30s}
 
-if test -z "$webroot" || test -z "$command"; then
+if [[ -z "$webroot" ]] || [[ -z "$command" ]]; then
   echo "CRITICAL - undefined webroot or command"
   exit 2
 fi
 
-if test ! -d "$webroot"; then
+if [[ ! -d "$webroot" ]]; then
   echo "CRITICAL - webroot directory does not exist"
   exit 2
 fi
 
-cd $webroot
+cd "$webroot"
 health=$(timeout -k $timeout $timeout $command)
 
-if test $? -ne 0; then
-  echo "CRITICAL - The application is sick, `${command}` return code != 0 !"
+if [[ $? -ne 0 ]]; then
+  echo "CRITICAL - The application is sick, '${command}' return code != 0 !"
   echo "$health"
   exit 2
 fi
