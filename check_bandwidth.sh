@@ -20,7 +20,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
     --interface|-iface)
       interface=$2
@@ -51,20 +51,20 @@ crit=${crit:=6000}
 interface=${interface:=eth0}
 sleep=${sleep:=5}
 
-rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
-tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)
-sleep $sleep
-rx2=$(cat /sys/class/net/$interface/statistics/rx_bytes)
-tx2=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+rx1=$(cat "/sys/class/net/${interface}/statistics/rx_bytes")
+tx1=$(cat "/sys/class/net/${interface}/statistics/tx_bytes")
+sleep "$sleep"
+rx2=$(cat "/sys/class/net/${interface}/statistics/rx_bytes")
+tx2=$(cat "/sys/class/net/${interface}/statistics/tx_bytes")
 
-tx_bps=$(expr $tx2 - $tx1)
-rx_bps=$(expr $rx2 - $rx1)
-tx_kbps=$(expr $tx_bps / 1024)
-rx_kbps=$(expr $rx_bps / 1024)
+tx_bps=$((tx2 - tx1))
+rx_bps=$((rx2 - rx1))
+tx_kbps=$((tx_bps / 1024))
+rx_kbps=$((rx_bps / 1024))
 
 status="tx $1: $tx_kbps kb/s rx $1: $rx_kbps kb/s"
-if [ $rx_kbps -ge $warn ] || [ $tx_kbps -ge $warn ]; then
-  if [ $rx_kbps -ge $crit ] || [ $tx_kbps -ge $crit ]; then
+if [[ $rx_kbps -ge $warn ]] || [[ $tx_kbps -ge $warn ]]; then
+  if [[ $rx_kbps -ge $crit ]] || [[ $tx_kbps -ge $crit ]]; then
     exit_status=2
     echo "CRITICAL - $status"
   else
