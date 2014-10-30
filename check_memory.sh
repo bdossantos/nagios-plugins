@@ -2,13 +2,10 @@
 #
 # Check memory usage
 #
-# Options :
-#
-#   -w/--warning)
-#       Warning value (percent)
-#
-#   -c/--critical)
-#       Critical value (percent)
+# Usage: check_memory.sh [-w warning] [-c critical]
+#     -w, --warning WARNING         Warning value (percent)
+#     -c, --critical CRITICAL       Critical value (percent)
+#     -h, --help                    Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -24,8 +21,13 @@ while [[ -n "$1" ]]; do
       crit=$2
       shift
       ;;
+    --help|-h)
+      sed -n '2,9p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
