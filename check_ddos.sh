@@ -13,7 +13,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
     --warning|-w)
       warn=$2
@@ -33,19 +33,19 @@ done
 
 warn=${warn:=50}
 crit=${crit:=70}
-filename='/tmp/check_ddos'
 
-trap "rm -f $filename; exit" EXIT
-netstat -an > $filename
-syn_recv=$(grep SYN_RECV $filename | wc -l)
-perfdata=$(grep SYN_RECV $filename | awk {'print $5'} | cut -f 1 -d ":" | sort | uniq -c | sort -k1,1rn | head -10)
+netstat=$(netstat -an)
+syn_recv=$(echo "$netstat" | grep 'SYN_RECV' | wc -l)
+perfdata=$(echo "$netstat" | grep 'SYN_RECV' | awk {'print $6'} | cut -f 1 -d ":" | sort | uniq -c | sort -k1,1rn | head -10)
 
 exit_status=3
-if [ $syn_recv -ge $warn ]; then
+if [[ $syn_recv -ge $warn ]]; then
   exit_status=1
-  if [ $syn_recv -ge $crit ]; then
+
+  if [[ $syn_recv -ge $crit ]]; then
     exit_status=2
   fi
+
   echo "DDOS attack !"
   echo "Top 10 SYN_RECV sources :"
   echo "$perfdata"
