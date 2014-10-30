@@ -23,7 +23,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
     -h | --host)
       host=$2
@@ -59,13 +59,13 @@ parsed_expire=$(date -d "$expire" +%s)
 today=$(date +%s)
 days_until=$(echo "($parsed_expire - $today) / (60 * 60 * 24)" | bc)
 
-if test $days_until -lt 0; then
+if [[ $days_until -lt 0 ]]; then
   echo "CRITICAL - Expired ${days_until} days ago - ${host}:${port}"
   exit 2
-elif test $days_until -lt $crit; then
+elif [[ $days_until -lt $crit ]]; then
   echo "CRITICAL - ${days_until} days left - ${host}:${port}"
   exit 2
-elif test $days_until -lt $warn; then
+elif [[ $days_until -lt $warn ]]; then
   echo "WARNING - ${days_until} days left - ${host}:${port}"
   exit 1
 else
