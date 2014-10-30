@@ -2,6 +2,10 @@
 #
 # Quick and dirty script to check if backup failed, in log we trust.
 #
+# Usage: check_backup.sh [-l log]
+#     -l, --log LOG         Path to backup log
+#     -h, --help            Display this screen
+#
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
 #
@@ -12,8 +16,13 @@ while [[ -n "$1" ]]; do
       backup_log=$2
       shift
       ;;
+    --help|-h)
+      sed -n '2,8p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
