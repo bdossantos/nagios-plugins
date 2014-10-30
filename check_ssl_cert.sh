@@ -2,22 +2,13 @@
 #
 # Check SSL certificate
 #
-# Options :
-#
-#   -w/--warning)
-#       Warning numbers of days left
-#
-#   -c/--critical)
-#       Critical numbers of days left
-#
-#   -h/--host)
-#       Hostname
-#
-#   -p/--port)
-#       port, eg: 443
-#
-#   -t/--timeout)
-#       timeout, eg: 10s
+# Usage: check_ssl_cert.sh [-w warning] [-c critical] [-h host] [-p port] [-t timeout]
+#   -w, --warning         Warning numbers of days left
+#   -c, --critical        Critical numbers of days left
+#   -h, --host            Hostname
+#   -p, --port            Port, eg: 443
+#   -t, --timeout         Command execution timeout, eg: 10s
+#   --help                Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -40,9 +31,14 @@ while [[ -n "$1" ]]; do
     -c | --critical)
       crit=$2
       ;;
-    -h | --help)
-      usage
+    --help)
+      sed -n '2,12p' "$0" | tr -d '#'
       exit 0;
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      exec "$0" --help
+      exit 3
       ;;
   esac
   shift
