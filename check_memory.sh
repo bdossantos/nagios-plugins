@@ -14,7 +14,7 @@
 # https://github.com/bdossantos/nagios-plugins
 #
 
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
     --warning|-w)
       warn=$2
@@ -35,15 +35,15 @@ done
 warn=${warn:=90}
 crit=${crit:=95}
 
-memory_total=$(free | fgrep "Mem:" | awk '{print $2}')
-memory_used=$(free | fgrep "/+ buffers/cache" | awk '{print $3}')
-percentage=$(expr $memory_used \* 100 \/ $memory_total)
-status="${percentage}% ($(expr $memory_used \/ 1024) of $(expr $memory_total \/ 1024)) MB used";
+memory_total=$(free | fgrep 'Mem:' | awk '{print $2}')
+memory_used=$(free | fgrep '/+ buffers/cache' | awk '{print $3}')
+percentage=$((memory_used * 100 / memory_total))
+status="${percentage}% ($((memory_used / 1024)) of $((memory_total / 1024))) MB used";
 
-if [ $percentage -gt $crit ]; then
+if [[ $percentage -gt $crit ]]; then
   echo "CRITICAL - ${status}"
   exit 2
-elif [ $percentage -gt $warn ]; then
+elif [[ $percentage -gt $warn ]]; then
   echo "WARNING - ${status}"
   exit 1
 else
