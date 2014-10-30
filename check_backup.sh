@@ -12,11 +12,11 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    -l|--log)
+    -l | --log)
       backup_log=$2
       shift
       ;;
-    --help|-h)
+    --help | -h)
       sed -n '2,8p' "$0" | tr -d '#'
       exit 0
       ;;
