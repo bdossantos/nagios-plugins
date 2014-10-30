@@ -2,19 +2,12 @@
 #
 # Check bandwidth plugin for Nagios
 #
-# Options :
-#
-#   -iface/--interface)
-#       Interface name (eth0 by default)
-#
-#   -s/--sleep)
-#       Sleep time between both statistics measures
-#
-#   -w/--warning)
-#       Warning value (KB/s)
-#
-#   -c/--critical)
-#       Critical value (KB/s)
+# Usage: check_bandwidth.sh [-i interface] [-s sleep] [-w warning] [-c critical]
+#     -i, --interface         Interface name (eth0 by default)
+#     -s, --sleep             Sleep time between both statistics measures
+#     -w, --warning           Warning value (KB/s)
+#     -c, --critical          Critical value (KB/s)
+#     -h, --help              Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -22,24 +15,29 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --interface|-iface)
+    --interface | -i)
       interface=$2
       shift
       ;;
-    --sleep|-s)
+    --sleep | -s)
       sleep=$2
       shift
       ;;
-    --warning|-w)
+    --warning | -w)
       warn=$2
       shift
       ;;
-    --critical|-c)
+    --critical | -c)
       crit=$2
       shift
       ;;
+    --help | -h)
+      sed -n '2,11p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
