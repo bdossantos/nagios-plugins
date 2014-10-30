@@ -23,11 +23,11 @@
 while test -n "$1"; do
   case $1 in
     --host|-h)
-      user=$2
+      host=$2
       shift
       ;;
     --port|-p)
-      password=$2
+      port=$2
       shift
       ;;
     --warning|-w)
