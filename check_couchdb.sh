@@ -2,12 +2,10 @@
 #
 # Check CouchDB plugin for Nagios
 #
-# Options :
-#   -H/--hostname)
-#       CouchDB host
-#
-#   -P/--port)
-#       CouchDB port
+# Usage: check_couchdb.sh [-H host] [-P port]
+#   -H, --host            Hostname
+#   -P, --port            Port, eg: 443
+#   -h, --help            Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -15,16 +13,21 @@
 
 while [[ -n "$1" ]]; do
   case "$1" in
-    --hostname|-H)
+    --hostname | -H)
       hostname=$2
       shift
       ;;
-    --port|-P)
+    --port | -P)
       port=$2
       shift
       ;;
+    --help | -h)
+      sed -n '2,9p' "$0" | tr -d '#'
+      exit 0;
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
