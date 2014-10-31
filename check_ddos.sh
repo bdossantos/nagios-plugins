@@ -2,12 +2,10 @@
 #
 # Check DDOS attack (SYN FLOOD) plugin for Nagios
 #
-# Options :
-#   -w/--warning)
-#       Warning value (number of SYN_RECV)
-#
-#   -c/--critical)
-#       Critical value (number of SYN_RECV)
+# Usage: check_ddos.sh [-w warning] [-c critical]
+#     -w, --warning WARNING         Warning value
+#     -c, --critical CRITICAL       Critical value
+#     -h, --help                    Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -15,16 +13,21 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --warning|-w)
+    --warning | -w)
       warn=$2
       shift
       ;;
-    --critical|-c)
+    --critical | -c)
       crit=$2
       shift
       ;;
+    --help | -h)
+      sed -n '2,9p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
