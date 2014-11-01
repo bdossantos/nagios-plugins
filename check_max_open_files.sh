@@ -2,16 +2,45 @@
 #
 # Check number of opened files
 #
+# Usage: check_max_open_files.sh [-w warning] [-c critical]
+#     -w, --warning WARNING         Warning value (percent)
+#     -c, --critical CRITICAL       Critical value (percent)
+#     -h, --help                    Display this screen
+#
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
 #
 
-if [[ $# != 2 ]]; then
-  echo "Syntax: check_max_open_files.sh <warn percent> <crit percent>"
-  echo
-  echo "Example: check_max_open_files.sh 75 90"
-  exit 3
+while [[ -n "$1" ]]; do
+  case $1 in
+    --warning|-w)
+      warn=$2
+      shift
+      ;;
+    --critical|-c)
+      crit=$2
+      shift
+      ;;
+    --help|-h)
+      sed -n '2,9p' "$0" | tr -d '#'
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      exec "$0" --help
+      exit 3
+      ;;
+  esac
+  shift
+done
+
+if ! hash lsof &>/dev/null; then
+  echo "CRITICAL - lsof command not found"
+  exit 2
 fi
+
+warn=${warn:=75}
+crit=${crit:=90}
 
 opened_files=$(lsof | wc -l)
 max_open_files=$(cat /proc/sys/fs/file-max)
@@ -21,18 +50,17 @@ if [[ -z $opened_files ]] || [[ -z $max_open_files ]]; then
   exit 3
 fi
 
-warn=$((max_open_files * $1 / 100))
-crit=$((max_open_files * $2 / 100))
-performance_data="max_open_files=$opened_files;$warn;$crit;0;$max_open_files"
+percentage=$((opened_files * 100 / max_open_files))
+status="${percentage}% (${opened_files} of ${max_open_files}) open files";
 
-if [[ $opened_files -gt $crit ]]; then
-  echo "CRITICAL - $opened_files / $max_open_files | $performance_data"
+if [[ $percentage -gt $crit ]]; then
+  echo "CRITICAL - ${status}"
   exit 2
-elif [[ $opened_files -gt $warn ]] && [[ $opened_files -lt $crit ]]; then
-  echo "WARNING - $opened_files / $max_open_files | $performance_data"
+elif [[ $percentage -gt $warn ]]; then
+  echo "WARNING - ${status}"
   exit 1
 else
-  echo "OK - $opened_files / $max_open_files | $performance_data"
+  echo "OK - ${status}"
   exit 0
 fi
 
