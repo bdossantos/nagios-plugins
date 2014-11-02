@@ -1,3 +1,16 @@
 # Various Nagios plugins
 
-See documentation in scripts headers.
+## Documentation
+
+Use `--help` flag or browse the documentation directly in scripts headers.
+
+## Coding style / Lint
+
+### Shell
+
+* [ShellCheck](https://github.com/koalaman/shellcheck)
+* [Google's Shell Style Guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml)
+
+### Ruby
+
+* [Rubocop](https://github.com/bbatsov/rubocop)
