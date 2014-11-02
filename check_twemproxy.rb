@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-
-# =============================================================================
+#
 # Twemproxy Status Check using JSON status page
 #
 # (c) Wanelo Inc, Distributed under Apache License
@@ -11,7 +10,7 @@
 #
 # Returns OK/SUCCESS when all servers in the sharded cluster are connected, or
 # CRITICAL otherwise.
-# =============================================================================
+#
 
 require 'optparse'
 require 'json'
@@ -24,6 +23,7 @@ STATE_UNKNOWN = 3
 
 options = Struct.new('Options', :host, :port).new
 options.port = 22_222
+options.host = '127.0.0.1'
 
 optparse = OptionParser.new do |opts|
   opts.banner = 'Usage: check_twemproxy [-h host] [-p port]'
@@ -44,24 +44,28 @@ end
 
 begin
   optparse.parse!
-  raise OptionParser::MissingArgument.new('host is required') unless options.host
+  fail OptionParser::MissingArgument.new('host is required') unless options.host
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
   puts e.message
   puts optparse
   exit STATE_UNKNOWN
 end
 
-NODENAME = `hostname`
-
-firstrun = JSON.parse(`nc #{options.host} #{options.port}`)
-secondrun = JSON.parse(`nc #{options.host} #{options.port}`)
+begin
+  firstrun = JSON.parse(`nc #{options.host} #{options.port} 2>/dev/null`)
+  secondrun = JSON.parse(`nc #{options.host} #{options.port} 2>/dev/null`)
+rescue
+  puts 'CRITICAL - timed out connecting to twemproxy on ' \
+       "#{options.host}:#{options.port}"
+end
 
 errors = {}
 error_clusters = {}
 secondrun.keys.select { |k| secondrun[k].is_a?(Hash) }.each do |cluster|
   secondrun[cluster].keys.select { |v| secondrun[cluster][v].is_a?(Hash) }.each do |server|
     next if secondrun[cluster][server]['server_connections'].to_i > 0
-    next if secondrun[cluster][server]['requests'].to_i - firstrun[cluster][server]['requests'].to_i == 0
+    next if secondrun[cluster][server]['requests'].to_i - \
+            firstrun[cluster][server]['requests'].to_i == 0
 
     errors[server] = 1
     error_clusters[cluster] = 1
