@@ -2,19 +2,12 @@
 #
 # Simple check Memcached plugin for Nagios
 #
-# Options :
-#
-#   -h/--host)
-#       Memcached host
-#
-#   -p/--port)
-#       Memcached port
-#
-#   -w/--warning)
-#       MySQL defaults-file path
-#
-#   -c/--critical)
-#       Critical value (percent)
+# Usage: check_memcached.sh [-h host] [-p port] [-w warning] [-c critical]
+#   -h, --host                  Memcached host
+#   -p, --port                  Memcached port, eg: 11211
+#   -w, --warning WARNING       Warning value (percent)
+#   -c, --critical CRITICAL     Critical value (percent)
+#   -H, --help                  Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
@@ -22,24 +15,29 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --host|-h)
+    --host | -h)
       host=$2
       shift
       ;;
-    --port|-p)
+    --port | -p)
       port=$2
       shift
       ;;
-    --warning|-w)
+    --warning | -w)
       warn=$2
       shift
       ;;
-    --critical|-c)
+    --critical | -c)
       crit=$2
       shift
       ;;
+    --help | -H)
+      sed -n '2,11p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
