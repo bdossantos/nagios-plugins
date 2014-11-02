@@ -2,62 +2,59 @@
 #
 # Check MySQL plugin for Nagios
 #
-# Options :
-#
-#   -u/--user)
-#       The user name
-#
-#   -p/--password)
-#       User password
-#
-#   -f/--defaults-file)
-#       MySQL defaults-file path
+# Usage: check_mysql.sh [-u user] [-p password] [-f MySQL defaults-file path]
+#   -u, --user                  MySQL user name
+#   -p, --port                  MySQL user password
+#   -f, --defaults-file         MySQL defaults-file path
+#   -h, --help                  Display this screen
 #
 # (c) 2014, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/nagios-plugins
 #
 
-if test "$#" -lt 1; then
-  echo "Illegal number of parameters"
-  exit 3
-fi
-
-while test -n "$1"; do
+while [[ -n "$1" ]]; do
   case $1 in
-    --user|-u)
+    --user | -u)
       user=$2
       shift
       ;;
-    --password|-p)
+    --password | -p)
       password=$2
       shift
       ;;
-    --defaults-file|-f)
+    --defaults-file | -f)
       default_files=$2
       shift
       ;;
+    --help | -h)
+      sed -n '2,10p' "$0" | tr -d '#'
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1"
+      exec "$0" --help
       exit 3
       ;;
   esac
   shift
 done
 
-if ! test -z $user; then
-  options="${options} -u ${user}"
+options=()
+
+if [[ ! -z $user ]]; then
+  options=("${options[@]}" "-u ${user}")
 fi
 
-if ! test -z $password; then
-  options="${options} -p${password}"
+if [[ ! -z $password ]]; then
+  options=("${options[@]}" "-p${password}")
 fi
 
-if ! test -z $default_files; then
-  options="${options} --defaults-file=${default_files}"
+if [[ ! -z $default_files ]]; then
+  options=("${options[@]}" "--defaults-file=${default_files}")
 fi
 
-perf_datas=$(/usr/bin/mysqladmin $options status)
-exit_status=$?
+status=$(/usr/bin/mysqladmin "${options[@]}" status)
+exit_code=$?
 
-echo $perf_datas
-exit $exit_status
+echo "$status"
+exit $exit_code
