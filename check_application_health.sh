@@ -20,12 +20,15 @@ while [[ -n "$1" ]]; do
   case $1 in
     -w | --webroot)
       webroot=$2
+      shift
       ;;
     -c | --command)
       command=$2
+      shift
       ;;
     -t | --timeout)
       timeout=$2
+      shift
       ;;
     --help | -h)
       sed -n '2,10p' "$0" | tr -d '#'
