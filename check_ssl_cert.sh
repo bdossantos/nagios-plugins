@@ -18,22 +18,27 @@ while [[ -n "$1" ]]; do
   case $1 in
     -h | --host)
       host=$2
+      shift
       ;;
     -p | --port)
       port=$2
+      shift
       ;;
     -t | --timeout)
       timeout=$2
+      shift
       ;;
     -w | --warning)
       warn=$2
+      shift
       ;;
     -c | --critical)
       crit=$2
+      shift
       ;;
     --help)
       sed -n '2,12p' "$0" | tr -d '#'
-      exit 0;
+      exit 3;
       ;;
     *)
       echo "Unknown argument: $1"
