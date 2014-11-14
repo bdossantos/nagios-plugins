@@ -33,7 +33,7 @@ while [[ -n "$1" ]]; do
       ;;
     --help | -H)
       sed -n '2,11p' "$0" | tr -d '#'
-      exit 0
+      exit 3
       ;;
     *)
       echo "Unknown argument: $1"
