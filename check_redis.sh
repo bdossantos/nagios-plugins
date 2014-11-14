@@ -30,7 +30,7 @@ print_version() {
 print_help() {
     print_version $PROGNAME $VERSION
     echo ""
-    echo "$PROGNAME is a Nagios plugin to check redis. (http://redis.io)"
+    echo "Usage: $PROGNAME is a Nagios plugin to check redis. (http://redis.io)"
     echo "It also parses the redis info output to get used memory, changes "
     echo "current connections, etc..."
     echo ""

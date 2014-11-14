@@ -27,7 +27,7 @@ print_help() {
   echo "The plugin is highly configurable for this reason. See below for"
   echo "available options."
   echo ""
-  echo "$PROGNAME -H localhost -P 80 -s fpm_status -o /tmp [-w INT] [-c INT] [-S]"
+  echo "Usage: $PROGNAME -H localhost -P 80 -s fpm_status -o /tmp [-w INT] [-c INT] [-S]"
   echo ""
   echo "Options:"
   echo "  -H/--hostname)"
