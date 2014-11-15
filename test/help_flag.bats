@@ -15,3 +15,11 @@ load test_helper
     echo "$output" | grep -i "Usage:"
   done
 }
+
+@test 'Check return code when using unknown flag' {
+  for file in $NAGIOS_BASH_SCRIPTS; do
+    run bash $file --unknown-flag-ya-rly
+    [ "$status" -eq 3 ]
+    echo "$output" | grep -i "Usage:"
+  done
+}
