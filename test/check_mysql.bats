@@ -3,7 +3,10 @@
 load test_helper
 
 @test 'Test check_mysql.sh output and the return code when mysqladmin is not found' {
+  OLD_PATH=$PATH
+  export PATH='.'
   run check_mysql.sh
+  export PATH=$OLD_PATH
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - mysqladmin command not found'
 }
