@@ -1,0 +1,5 @@
+language: c
+script: make test
+notifications:
+  email:
+    on_success: never
