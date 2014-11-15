@@ -2,7 +2,7 @@ setup() {
   export TMP="$BATS_TEST_DIRNAME/tmp"
   export NAGIOS_PLUGINS_DIRECTORY="$TMP/../.."
   export PATH="$NAGIOS_PLUGINS_DIRECTORY:$TMP/stub:$PATH"
-  export NAGIOS_BASH_SCRIPTS=$(find "$NAGIOS_PLUGINS_DIRECTORY" -type f -maxdepth 1 -name '*.sh' -print)
+  export NAGIOS_BASH_SCRIPTS=$(find "$NAGIOS_PLUGINS_DIRECTORY" -maxdepth 1 -type f -name '*.sh' -print)
 }
 
 teardown() {
