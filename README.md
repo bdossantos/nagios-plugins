@@ -1,5 +1,7 @@
 # Various Nagios plugins
 
+[![Build Status](https://travis-ci.org/bdossantos/nagios-plugins.svg)](https://travis-ci.org/bdossantos/nagios-plugins)
+
 ## Documentation
 
 Use `--help` flag or browse the documentation directly in scripts headers.
