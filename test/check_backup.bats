@@ -14,7 +14,7 @@ load test_helper
   echo "$output" | grep "CRITICAL - $TMP/backup.log does not exist !"
 }
 
-@test 'Test backup.sh on a log without any error or warning' {
+@test 'Test check_backup.sh on a log without any error or warning' {
   # Create fake backup log "on fly", ugly, right ?
   cat <<BACKUP > $TMP/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][info] [ backup 4.0.1 : ruby 2.1.2p95 (2014-05-08 revision 45877) [x86_64-linux] ]
@@ -47,7 +47,7 @@ BACKUP
   echo "$output" | grep "OK - $TMP/backup.log does not contain any error/warning"
 }
 
-@test 'Test backup.sh on a log with warnings' {
+@test 'Test check_backup.sh on a log with warnings' {
   # Inject error to previous backup log
   cat <<BACKUP >> $TMP/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][warn] Cleaner: Cleanup Warning
@@ -65,7 +65,7 @@ BACKUP
   echo "$output" | grep "WARNING - $TMP/backup.log contain warning(s)"
 }
 
-@test 'Test backup.sh on a log with errors' {
+@test 'Test check_backup.sh on a log with errors' {
   # Inject error to previous backup log
   cat <<BACKUP >> $TMP/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][error] Model::Error: Backup for MySQL all_databases (mysql_all_databases) Failed!
