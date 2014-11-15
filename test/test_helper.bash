@@ -11,7 +11,15 @@ teardown() {
 
 # http://www.nherson.com/blog/2014/01/13/stubbing-system-executables-with-bats
 stub() {
+  exit_code=$3
+  [[ -z $exit_code ]] && exit_code=0
+
   mkdir -p "$BATS_TEST_DIRNAME/tmp/stub"
-  echo "echo '$2'" > "$BATS_TEST_DIRNAME/tmp/stub/$1"
+  cat <<STUB > "$BATS_TEST_DIRNAME/tmp/stub/$1"
+#!/usr/bin/env bash
+
+echo '$2'
+exit $exit_code
+STUB
   chmod +x "$BATS_TEST_DIRNAME/tmp/stub/$1"
 }
