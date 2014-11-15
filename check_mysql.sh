@@ -39,6 +39,11 @@ while [[ -n "$1" ]]; do
   shift
 done
 
+if ! hash mysqladmin &>/dev/null; then
+  echo "CRITICAL - mysqladmin command not found"
+  exit 2
+fi
+
 options=()
 
 if [[ ! -z $user ]]; then
@@ -53,7 +58,7 @@ if [[ ! -z $default_files ]]; then
   options=("${options[@]}" "--defaults-file=${default_files}")
 fi
 
-status=$(/usr/bin/mysqladmin "${options[@]}" status)
+status=$(mysqladmin "${options[@]}" status)
 exit_code=$?
 
 echo "$status"
