@@ -3,6 +3,7 @@
 load test_helper
 
 @test 'Test check_mysql.sh output and the return code when mysqladmin is not found' {
+  skip
   OLD_PATH=$PATH
   export PATH='.'
   run check_mysql.sh
