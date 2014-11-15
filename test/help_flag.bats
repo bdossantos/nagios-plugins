@@ -2,21 +2,21 @@
 
 load test_helper
 
-@test 'Check return code when using help flag' {
+@test 'Test return code when using help flag' {
   for file in $NAGIOS_BASH_SCRIPTS; do
     run bash $file --help
     [ "$status" -eq 3 ]
   done
 }
 
-@test 'Check if help flag return usage instructions' {
+@test 'Test if help flag return usage instructions' {
   for file in $NAGIOS_BASH_SCRIPTS; do
     run bash $file --help
     echo "$output" | grep -i "Usage:"
   done
 }
 
-@test 'Check return code when using unknown flag' {
+@test 'Test return code when using unknown flag' {
   for file in $NAGIOS_BASH_SCRIPTS; do
     run bash $file --unknown-flag-ya-rly
     [ "$status" -eq 3 ]

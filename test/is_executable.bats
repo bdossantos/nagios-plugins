@@ -2,7 +2,7 @@
 
 load test_helper
 
-@test "Check if each script is executable" {
+@test 'Test if each script is executable' {
   for file in $NAGIOS_BASH_SCRIPTS; do
     run test -x "$file"
     [ $status -eq 0 ]
