@@ -14,3 +14,9 @@ Use `--help` flag or browse the documentation directly in scripts headers.
 ### Ruby
 
 * [Rubocop](https://github.com/bbatsov/rubocop)
+
+## Running tests
+
+```bash
+make test
+```
