@@ -9,8 +9,8 @@ load test_helper
   echo "$output" | grep 'OK - CouchDB is up & running'
 }
 
-@test 'Test check_couchdb.sh with KO service' {
-  run check_couchdb.sh
+@test 'Test check_couchdb.sh with unreachable service' {
+  run check_couchdb.sh -H fakehost -P 1337
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - CouchDB is KO'
 }
