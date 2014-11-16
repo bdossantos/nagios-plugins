@@ -42,7 +42,10 @@ memory_used=$(free -m | fgrep '/+ buffers/cache' | awk '{print $3}')
 percentage=$((memory_used * 100 / memory_total))
 status="${percentage}% (${memory_used} of ${memory_total}) MB used";
 
-if [[ $percentage -gt $crit ]]; then
+if [[ -z $percentage ]]; then
+  echo "UNKNOWN - Error"
+  exit 3
+elif [[ $percentage -gt $crit ]]; then
   echo "CRITICAL - ${status}"
   exit 2
 elif [[ $percentage -gt $warn ]]; then
@@ -52,6 +55,3 @@ else
   echo "OK - ${status}"
   exit 0
 fi
-
-echo "UNKNOWN - Error"
-exit 3
