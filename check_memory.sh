@@ -37,10 +37,10 @@ done
 warn=${warn:=90}
 crit=${crit:=95}
 
-memory_total=$(free | fgrep 'Mem:' | awk '{print $2}')
-memory_used=$(free | fgrep '/+ buffers/cache' | awk '{print $3}')
+memory_total=$(free -m | fgrep 'Mem:' | awk '{print $2}')
+memory_used=$(free -m | fgrep '/+ buffers/cache' | awk '{print $3}')
 percentage=$((memory_used * 100 / memory_total))
-status="${percentage}% ($((memory_used / 1024)) of $((memory_total / 1024))) MB used";
+status="${percentage}% (${memory_used} of ${memory_total}) MB used";
 
 if [[ $percentage -gt $crit ]]; then
   echo "CRITICAL - ${status}"
