@@ -39,9 +39,9 @@ port=${port:=5984}
 
 response=$(curl -s "http://${hostname}:${port}")
 if [[ "$response" =~ Welcome ]]; then
-  echo "CouchDB OK"
+  echo 'OK - CouchDB is up & running'
   exit 0
 else
-  echo "CouchDB KO"
+  echo 'CRITICAL - CouchDB is KO'
   exit 2
 fi
