@@ -10,7 +10,7 @@ load test_helper
 }
 
 @test 'Test check_influxdb.sh with KO InfluxDB' {
-  run check_influxdb.sh
+  run check_influxdb.sh -H fakehost -P 12345
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - InfluxDB is KO'
 }
