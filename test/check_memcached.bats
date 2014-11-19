@@ -8,6 +8,26 @@ load test_helper
   echo "$output" | grep 'CRITICAL - timed out connecting to memcached on fakehost:123456'
 }
 
+@test 'Test check_memcached.sh with empty stats' {
+  stub nc ''
+  run check_memcached.sh --host fakehost --port 123456
+  [ "$status" -eq 2 ]
+  echo "$output" | grep 'CRITICAL - timed out connecting to memcached on fakehost:123456'
+}
+
+@test 'Test check_memcached.sh with empty limit_maxbytes/bytes stats' {
+  stub nc 'empty'
+  run check_memcached.sh --host fakehost --port 123456
+  [ "$status" -eq 2 ]
+  echo "$output" | grep "CRITICAL - 'limit_maxbytes' and 'bytes' are empty"
+}
+
+@test 'Test check_memcached.sh with warn flag greater than critical' {
+  run check_memcached.sh --warning 95 --critical 90
+  [ "$status" -eq 3 ]
+  echo "$output" | grep "UNKNOWN - warn (95) can't be greater than critical (90)"
+}
+
 @test 'Test check_memcached.sh with fake OK but empty memcached' {
   local nc_output='STAT limit_maxbytes 4294967296
   STAT bytes 0'
@@ -23,7 +43,7 @@ load test_helper
   STAT bytes 606577764'
   stub nc "$nc_output"
 
-  run check_memcached.sh --host fakehost --port 123456 --warning 90 --critical 90
+  run check_memcached.sh --host fakehost --port 123456 --warning 90 --critical 95
   [ "$status" -eq 0 ]
   echo "$output" | grep 'OK - 14% used (606577764 of 4294967296) bytes used'
 }

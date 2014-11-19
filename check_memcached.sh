@@ -49,15 +49,25 @@ port=${port:=11211}
 warn=${warn:=90}
 crit=${crit:=95}
 
+if [[ $warn -ge $crit ]]; then
+  echo "UNKNOWN - warn ($warn) can't be greater than critical ($crit)"
+  exit 3
+fi
+
 output=$( (echo 'stats'; echo 'quit';) | nc "$host" "$port")
 
-if test $? -ne 0; then
+if [[ $? -ne 0 ]] || [[ -z $output ]]; then
   echo "CRITICAL - timed out connecting to memcached on ${host}:${port}"
   exit 2
 fi
 
 limit_maxbytes=$(echo "$output" | grep 'limit_maxbytes' | awk '{ gsub(/\r/, ""); print $3 }')
 bytes=$(echo "$output" | grep ' bytes ' | awk '{ gsub(/\r/, ""); print $3 }')
+
+if [[ -z $limit_maxbytes ]] || [[ -z $bytes ]]; then
+  echo "CRITICAL - 'limit_maxbytes' and 'bytes' are empty"
+  exit 2
+fi
 
 if [[ "$bytes" -eq 0 ]]; then
   echo 'OK - Memcached is empty'
