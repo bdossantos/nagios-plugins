@@ -76,6 +76,7 @@ db11:keys=80530,expires=0,avg_ttl=0
 db13:keys=38,expires=0,avg_ttl=0'
 
 @test 'Test check_redis.sh with fake unreachable Redis and default options' {
+  [[ $(echo 'info' | nc -w1 127.0.0.1 6379) ]] && skip
   run check_redis.sh
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - could not connect to redis on 127.0.0.1:6379'
