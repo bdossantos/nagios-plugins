@@ -58,7 +58,7 @@ crit=${crit:=7}
 expire=$(timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2)
 parsed_expire=$(date -d "$expire" +%s)
 today=$(date +%s)
-days_until=$(echo "($parsed_expire - $today) / (60 * 60 * 24)" | bc)
+days_until=$(((parsed_expire - today) / (60 * 60 * 24)))
 
 if [[ $days_until -lt 0 ]]; then
   echo "CRITICAL - Expired ${days_until} days ago - ${host}:${port}"
