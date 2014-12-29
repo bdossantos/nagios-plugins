@@ -1,5 +1,8 @@
 language: c
 script: make test
+env:
+  global:
+    - TZ=Europe/Paris
 notifications:
   email:
     on_success: never
