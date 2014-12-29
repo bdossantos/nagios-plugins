@@ -6,7 +6,7 @@ load test_helper
   # fake `timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2` output
   stub timeout ''
   stub openssl ''
-  stub cut "$(date -u -d '+1337 days')"
+  stub cut "$(date -d '+1337 days')"
 
   run check_ssl_cert.sh --warning 15 --critical 7 --host monitoringsuck --port 443
   [ "$status" -eq 0 ]
@@ -17,7 +17,7 @@ load test_helper
   # fake `timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2` output
   stub timeout ''
   stub openssl ''
-  stub cut "$(date -u -d '+8 days')"
+  stub cut "$(date -d '+8 days')"
 
   run check_ssl_cert.sh --warning 15 --critical 7 --host monitoringsuck --port 443
   [ "$status" -eq 1 ]
@@ -28,7 +28,7 @@ load test_helper
   # fake `timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2` output
   stub timeout ''
   stub openssl ''
-  stub cut "$(date -u -d '+2 days')"
+  stub cut "$(date -d '+2 days')"
 
   run check_ssl_cert.sh --warning 15 --critical 7 --host monitoringsuck --port 443
   [ "$status" -eq 2 ]
