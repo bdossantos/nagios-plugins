@@ -24,4 +24,5 @@ load test_helper
 
   run check_mysql.sh
   [ "$status" -eq 0 ]
+  echo "$output" | grep "$output"
 }
