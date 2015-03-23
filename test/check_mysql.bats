@@ -3,13 +3,19 @@
 load test_helper
 
 @test 'Test check_mysql.sh output and the return code when mysqladmin is not found' {
-  skip
-  OLD_PATH=$PATH
-  export PATH='.'
-  run check_mysql.sh
-  export PATH=$OLD_PATH
+  PATH="/fake:/bin:$BATS_TEST_DIRNAME/../" run check_mysql.sh
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - mysqladmin command not found'
+}
+
+@test 'Test check_mysql.sh output with failed connection' {
+  local output="mysqladmin: connect to server at 'localhost' failed
+  error: 'Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)'
+  Check that mysqld is running and that the socket: '/tmp/mysql.sock' exists!"
+  stub mysqladmin "$output" 1
+
+  run check_mysql.sh
+  [ "$status" -eq 2 ]
 }
 
 @test 'Test check_mysql.sh output with fake mysqladmin command and successfull result' {
