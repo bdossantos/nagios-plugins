@@ -11,7 +11,7 @@ setup() {
 }
 
 teardown() {
-  [[ -d "$TMP" ]] && rm -rf "$TMP"/*
+  [[ -d "$TMP" ]] && rm -rf "${TMP:?}"/*
 }
 
 # http://www.nherson.com/blog/2014/01/13/stubbing-system-executables-with-bats
