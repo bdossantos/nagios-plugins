@@ -24,5 +24,5 @@ while [[ -n "$1" ]]; do
   shift
 done
 
-last -i | tac | tail -n 1
-exit 0
+last | tac | tail -n 1
+exit $?
