@@ -55,7 +55,22 @@ timeout=${timeout:=30s}
 warn=${warn:=15}
 crit=${crit:=7}
 
-expire=$(timeout $timeout openssl s_client -connect $host:$port < /dev/null 2>&1 | openssl x509 -enddate -noout | cut -d '=' -f2)
+if timeout "$timeout" \
+  openssl s_client -servername "$host" -connect "${host}:${port}" \
+  < /dev/null 2>&1 \
+  | openssl x509 -text -in /dev/stdin \
+  | grep -q 'sha1WithRSAEncryption'; then
+  echo 'CRITICAL - SSL Certificate is SHA1'
+  exit 2
+fi
+
+expire=$(
+  timeout "$timeout" \
+  openssl s_client -servername "$host" -connect "${host}:${port}" \
+  < /dev/null 2>&1 \
+  | openssl x509 -enddate -noout \
+  | cut -d '=' -f2
+)
 parsed_expire=$(date -d "$expire" +%s)
 today=$(date +%s)
 days_until=$(((parsed_expire - today) / (60 * 60 * 24)))
