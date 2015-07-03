@@ -8,7 +8,6 @@ load test_helper
   stub grep 'Signature Algorithm: sha1WithRSAEncryption'
 
   run check_ssl_cert.sh --warning 15 --critical 7 --host monitoringsuck --port 443
-  echo "$output" >/tmp/debug
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - SSL Certificate is SHA1'
 }

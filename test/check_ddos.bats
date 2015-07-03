@@ -86,7 +86,6 @@ load test_helper
   stub netstat "$netstat_output"
 
   run check_ddos.sh -w 2 -c 4
-  echo "$output" >/tmp/netstat
   [ "$status" -eq 1 ]
   echo "$output" | grep 'DDOS attack !
   Top 10 SYN_RECV sources :
@@ -134,7 +133,6 @@ load test_helper
   stub netstat "$netstat_output"
 
   run check_ddos.sh -w 1 -c 2
-  echo "$output" >/tmp/netstat
   [ "$status" -eq 2 ]
   echo "$output" | grep 'DDOS attack !
   Top 10 SYN_RECV sources :
