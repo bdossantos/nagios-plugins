@@ -25,7 +25,6 @@ load test_helper
   stub awk 'error' 1
 
   run check_mysql.sh
-  echo "$mysql_output" >/tmp/my
   [ "$status" -eq 2 ]
   echo "$output" | grep 'CRITICAL - could not fetch MySQL max_connections'
 }
