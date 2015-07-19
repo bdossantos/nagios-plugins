@@ -1,5 +1,11 @@
 language: c
+sudo: false
 script: make test
+addons:
+  apt:
+    packages:
+      - make
+      - net-tools
 env:
   global:
     - TZ=Europe/Paris
