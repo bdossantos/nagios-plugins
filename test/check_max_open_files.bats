@@ -3,9 +3,8 @@
 load test_helper
 
 @test 'Test check_max_open_files.sh when max_open_files is not found' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc '1515866'
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk '1515866'
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat ''
@@ -16,9 +15,8 @@ load test_helper
 }
 
 @test 'Test check_max_open_files.sh when opened_files is not found' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc ''
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk ''
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat '3271108'
@@ -29,9 +27,8 @@ load test_helper
 }
 
 @test 'Test check_max_open_files.sh when both opened_files and max_open_files are not found' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc ''
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk ''
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat ''
@@ -42,9 +39,8 @@ load test_helper
 }
 
 @test 'Test check_max_open_files.sh when everything is OK' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc '1515866'
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk '1515866'
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat '3271108'
@@ -55,9 +51,8 @@ load test_helper
 }
 
 @test 'Test check_max_open_files.sh when warning treshold is reached' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc '2705866'
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk '2705866'
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat '3271108'
@@ -68,9 +63,8 @@ load test_helper
 }
 
 @test 'Test check_max_open_files.sh when critical treshold is reached' {
-  # fake `lsof | wc -l` output (opened files)
-  stub lsof ''
-  stub wc '3145532'
+  # fake awk '{ print $1 }' < /proc/sys/fs/file-nr
+  stub awk '3145532'
 
   # fake `cat /proc/sys/fs/file-max` output (max open files)
   stub cat '3271108'

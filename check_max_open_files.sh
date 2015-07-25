@@ -42,7 +42,7 @@ fi
 warn=${warn:=75}
 crit=${crit:=90}
 
-opened_files=$(lsof | wc -l)
+opened_files=$(cat /proc/sys/fs/file-nr | awk '{ print $1 }')
 max_open_files=$(cat /proc/sys/fs/file-max)
 
 if [[ -z $opened_files ]] || [[ -z $max_open_files ]]; then
