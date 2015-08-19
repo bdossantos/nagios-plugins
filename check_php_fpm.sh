@@ -71,7 +71,7 @@ fi
 
 if [[ "$secure" = 1 ]]; then
   status=$(wget --no-check-certificate -q -t 3 -T 3 \
-    "http://${host}:${port}/${status_page}" -O -)
+    "https://${host}:${port}/${status_page}" -O -)
 else
   status=$(wget -q -t 3 -T 3 "http://${host}:${port}/${status_page}" -O -)
 fi
