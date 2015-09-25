@@ -26,10 +26,6 @@ while [[ -n "$1" ]]; do
       command=$2
       shift
       ;;
-    -t | --timeout)
-      timeout=$2
-      shift
-      ;;
     --help | -h)
       sed -n '2,10p' "$0" | tr -d '#'
       exit 3
@@ -43,8 +39,6 @@ while [[ -n "$1" ]]; do
   shift
 done
 
-timeout=${timeout:=30s}
-
 if [[ -z "$webroot" ]] || [[ -z "$command" ]]; then
   echo "CRITICAL - undefined webroot or command"
   exit 2
@@ -56,7 +50,7 @@ if [[ ! -d "$webroot" ]]; then
 fi
 
 cd "$webroot"
-health=$(timeout -k $timeout $timeout $command)
+health=$($command)
 
 if [[ $? -ne 0 ]]; then
   echo "CRITICAL - The application is sick, '${command}' return code != 0 !"
