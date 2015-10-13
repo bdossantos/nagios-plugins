@@ -63,6 +63,8 @@ fi
 
 limit_maxbytes=$(echo "$output" | grep 'limit_maxbytes' | awk '{ gsub(/\r/, ""); print $3 }')
 bytes=$(echo "$output" | grep ' bytes ' | awk '{ gsub(/\r/, ""); print $3 }')
+get_hits=$(echo "$output" | grep 'get_hits' | awk '{ gsub(/\r/, ""); print $3 }')
+get_misses=$(echo "$output" | grep 'get_misses' | awk '{ gsub(/\r/, ""); print $3 }')
 
 if [[ -z $limit_maxbytes ]] || [[ -z $bytes ]]; then
   echo "CRITICAL - 'limit_maxbytes' and 'bytes' are empty"
@@ -75,7 +77,8 @@ if [[ "$bytes" -eq 0 ]]; then
 fi
 
 used=$((bytes * 100 / limit_maxbytes))
-status="${used}% used (${bytes} of ${limit_maxbytes}) bytes used";
+hit_ratio=$(awk 'BEGIN { printf("%0.2f", ("'$get_hits'" / ("'$get_misses'" + "'$get_hits'")) * 100) }')
+status="${used}% used (${bytes} of ${limit_maxbytes}) bytes used, get hit ratio ${hit_ratio}%";
 
 if [[ $used -gt $crit ]]; then
   echo "CRITICAL - ${status}"
