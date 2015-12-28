@@ -71,7 +71,8 @@ rx_bps=$((rx2 - rx1))
 tx_kbps=$((tx_bps / 1024))
 rx_kbps=$((rx_bps / 1024))
 
-status="tx $1: $tx_kbps kb/s | rx $1: $rx_kbps kb/s"
+status="tx ${interface}: $tx_kbps kb/s, rx ${interface}: $rx_kbps kb/s | tx=$tx_kbps rx=$rx_kbps"
+
 if [[ $rx_kbps -ge $warning ]] || [[ $tx_kbps -ge $warning ]]; then
   if [[ $rx_kbps -ge $critical ]] || [[ $tx_kbps -ge $critical ]]; then
     exit_status=2
