@@ -36,9 +36,9 @@ done
 
 hostname=${hostname:=127.0.0.1}
 port=${port:=8086}
+url="http://${hostname}:${port}/ping?wait_for_leader=1s"
 
-response=$(curl -s "http://${hostname}:${port}/ping")
-if [[ "$response" =~ ok ]]; then
+if curl -s -I "$url" >/dev/null; then
   echo "OK - InfluxDB is up & running"
   exit 0
 else
