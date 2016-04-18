@@ -34,11 +34,6 @@ while [[ -n "$1" ]]; do
   shift
 done
 
-if ! hash lsof &>/dev/null; then
-  echo "CRITICAL - lsof command not found"
-  exit 2
-fi
-
 warn=${warn:=75}
 crit=${crit:=90}
 
