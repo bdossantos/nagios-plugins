@@ -24,7 +24,7 @@ while [[ -n "$1" ]]; do
   shift
 done
 
-output=$(dmesg -T -l err,crit,alert,emerg 2>/dev/null || dmesg || exit 3)
+output=$(dmesg -T -l warn,err,crit,alert,emerg 2>/dev/null || dmesg || exit 3)
 if [[ ! -z "$output" ]]; then
   filtered_output=$({
     echo "$output" | egrep -o -i \
