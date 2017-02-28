@@ -37,10 +37,16 @@ done
 warn=${warn:=90}
 crit=${crit:=95}
 
-memory_total=$(free -m | awk '/^Mem:/ { print $2 }')
-memory_used=$(free -m | awk '/buffers\/cache:/ { print $3 }')
-percentage=$((memory_used * 100 / memory_total))
-status="${percentage}% (${memory_used} of ${memory_total}) MB used";
+meminfo=$(cat /proc/meminfo)
+memory_total=$(echo "$meminfo" | awk '/MemTotal/ { print int($2 / 1024) }')
+memory_free=$(echo "$meminfo" | awk '/MemFree/ { print int($2 / 1024) }')
+buffers=$(echo "$meminfo" | awk '/Buffers/ { print int($2 / 1024) }')
+cached=$(echo "$meminfo" | awk '/^Cached: */ { print int($2 / 1024) }')
+total_used_memory=$((memory_total - memory_free))
+non_cached_buffer_used_memory=$((total_used_memory - (buffers + cached)))
+
+percentage=$((non_cached_buffer_used_memory * 100 / memory_total))
+status="${percentage}% of memory used (${non_cached_buffer_used_memory} of ${memory_total} MB)"
 
 if [[ -z $percentage ]]; then
   echo "UNKNOWN - Error"
