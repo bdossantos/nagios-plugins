@@ -7,7 +7,8 @@ setup() {
   NAGIOS_BASH_SCRIPTS=$(find "$NAGIOS_PLUGINS_DIRECTORY" -maxdepth 1 -type f -name '*.sh' -print)
   export NAGIOS_BASH_SCRIPTS
   OS="$(uname)"
-  export $OS
+
+  export OS
 }
 
 teardown() {
