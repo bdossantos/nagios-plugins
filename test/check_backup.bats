@@ -14,6 +14,14 @@ load test_helper
   echo "$output" | grep "CRITICAL - $TMP/backup.log does not exist !"
 }
 
+@test 'Test if the backup process started today' {
+  touch -m -t 0101010000 /tmp/backup.log
+
+  run check_backup.sh -l /tmp/backup.log
+  [ "$status" -eq 1 ]
+  echo "$output" | grep 'WARNING - The backup process seems to have not started today.'
+}
+
 @test 'Test check_backup.sh on a log without any error or warning' {
   # Create fake backup log "on fly", ugly, right ?
   cat <<BACKUP > $TMP/backup.log
