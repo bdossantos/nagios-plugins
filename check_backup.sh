@@ -42,6 +42,12 @@ if [[ ! -f $backup_log ]]; then
   exit 2
 fi
 
+# Naive approch to check if backup job started today
+if [[ -n "$(find "$backup_log" -type f -mtime +1 | head -n 1)" ]]; then
+  echo 'WARNING - The backup process seems to have not started today.'
+  exit 1
+fi
+
 if egrep "$TODAY|$YESTERDAY" "$backup_log" | grep -q -i 'error'; then
   echo "CRITICAL - ${backup_log} contain error(s)"
   exit 2
