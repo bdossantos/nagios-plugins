@@ -9,9 +9,9 @@ load test_helper
 }
 
 @test 'Test check_backup.sh with absent log file' {
-  run check_backup.sh -l $TMP/backup.log
+  run check_backup.sh -l /tmp/backup.log
   [ "$status" -eq 2 ]
-  echo "$output" | grep "CRITICAL - $TMP/backup.log does not exist !"
+  echo "$output" | grep "CRITICAL - /tmp/backup.log does not exist !"
 }
 
 @test 'Test if the backup process started today' {
@@ -24,7 +24,7 @@ load test_helper
 
 @test 'Test check_backup.sh on a log without any error or warning' {
   # Create fake backup log "on fly", ugly, right ?
-  cat <<BACKUP > $TMP/backup.log
+  cat <<BACKUP > /tmp/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][info] [ backup 4.0.1 : ruby 2.1.2p95 (2014-05-08 revision 45877) [x86_64-linux] ]
 [$(date +"%Y/%m/%d %H:%M:%S")][info] Database::MySQL Started...
 [$(date +"%Y/%m/%d %H:%M:%S")][info] Using Compressor::Custom for compression.
@@ -50,14 +50,14 @@ load test_helper
 [$(date +"%Y/%m/%d %H:%M:%S")][info] After Hook Finished.
 BACKUP
 
-  run check_backup.sh -l $TMP/backup.log
+  run check_backup.sh -l /tmp/backup.log
   [ "$status" -eq 0 ]
-  echo "$output" | grep "OK - $TMP/backup.log does not contain any error/warning"
+  echo "$output" | grep "OK - /tmp/backup.log does not contain any error/warning"
 }
 
 @test 'Test check_backup.sh on a log with warnings' {
   # Inject error to previous backup log
-  cat <<BACKUP >> $TMP/backup.log
+  cat <<BACKUP >> /tmp/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][warn] Cleaner: Cleanup Warning
 [$(date +"%Y/%m/%d %H:%M:%S")][warn]   The temporary packaging folder still exists!
 [$(date +"%Y/%m/%d %H:%M:%S")][warn]   '/backups/tmp/mysql_all_databases'
@@ -68,14 +68,14 @@ BACKUP
 [$(date +"%Y/%m/%d %H:%M:%S")][warn]   The temporary files which had to be removed should not have existed.
 BACKUP
 
-  run check_backup.sh -l $TMP/backup.log
+  run check_backup.sh -l /tmp/backup.log
   [ "$status" -eq 1 ]
-  echo "$output" | grep "WARNING - $TMP/backup.log contain warning(s)"
+  echo "$output" | grep "WARNING - /tmp/backup.log contain warning(s)"
 }
 
 @test 'Test check_backup.sh on a log with errors' {
   # Inject error to previous backup log
-  cat <<BACKUP >> $TMP/backup.log
+  cat <<BACKUP >> /tmp/backup.log
 [$(date +"%Y/%m/%d %H:%M:%S")][error] Model::Error: Backup for MySQL all_databases (mysql_all_databases) Failed!
 [$(date +"%Y/%m/%d %H:%M:%S")][error] --- Wrapped Exception ---
 [$(date +"%Y/%m/%d %H:%M:%S")][error] Database::MySQL::Error: Dump Failed!
@@ -88,7 +88,7 @@ BACKUP
 [$(date +"%Y/%m/%d %H:%M:%S")][error]   Errno::ENOENT: No such file or directory - 'mysqldump' returned exit code: 2
 BACKUP
 
-  run check_backup.sh -l $TMP/backup.log
+  run check_backup.sh -l /tmp/backup.log
   [ "$status" -eq 2 ]
-  echo "$output" | grep "CRITICAL - $TMP/backup.log contain error(s)"
+  echo "$output" | grep "CRITICAL - /tmp/backup.log contain error(s)"
 }
