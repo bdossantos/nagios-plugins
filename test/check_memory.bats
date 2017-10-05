@@ -46,7 +46,7 @@ DirectMap1G:    67108864 kB'
 
   run check_memory.sh --warning 90 --critical 95
   [ "$status" -eq 0 ]
-  echo "$output" | grep 'OK - 61% of memory used (39285 of 64369 MB)'
+  echo "$output" | grep 'OK - 61% of memory used (39285 of 64369 MB) | used=39285 total=64369'
 }
 
 @test 'Test check_memory.sh warning' {
@@ -54,7 +54,7 @@ DirectMap1G:    67108864 kB'
 
   run check_memory.sh --warning 60 --critical 95
   [ "$status" -eq 1 ]
-  echo "$output" | grep 'WARNING - 61% of memory used (39285 of 64369 MB)'
+  echo "$output" | grep 'WARNING - 61% of memory used (39285 of 64369 MB) | used=39285 total=64369'
 }
 
 @test 'Test check_memory.sh critical' {
@@ -62,7 +62,7 @@ DirectMap1G:    67108864 kB'
 
   run check_memory.sh --warning 50 --critical 60
   [ "$status" -eq 2 ]
-  echo "$output" | grep 'CRITICAL - 61% of memory used (39285 of 64369 MB)'
+  echo "$output" | grep 'CRITICAL - 61% of memory used (39285 of 64369 MB) | used=39285 total=64369'
 }
 
 @test 'Test check_memory.sh unknown' {
