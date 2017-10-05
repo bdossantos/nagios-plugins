@@ -52,12 +52,12 @@ if [[ -z $percentage ]]; then
   echo "UNKNOWN - Error"
   exit 3
 elif [[ $percentage -gt $crit ]]; then
-  echo "CRITICAL - ${status}"
+  echo "CRITICAL - ${status} | used=${non_cached_buffer_used_memory} total=${memory_total}"
   exit 2
 elif [[ $percentage -gt $warn ]]; then
-  echo "WARNING - ${status}"
+  echo "WARNING - ${status} | used=${non_cached_buffer_used_memory} total=${memory_total}"
   exit 1
 else
-  echo "OK - ${status}"
+  echo "OK - ${status} | used=${non_cached_buffer_used_memory} total=${memory_total}"
   exit 0
 fi
