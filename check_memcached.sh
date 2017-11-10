@@ -66,6 +66,9 @@ bytes=$(echo "$output" | grep ' bytes ' | awk '{ gsub(/\r/, ""); print $3 }')
 get_hits=$(echo "$output" | grep 'get_hits' | awk '{ gsub(/\r/, ""); print $3 }')
 get_misses=$(echo "$output" | grep 'get_misses' | awk '{ gsub(/\r/, ""); print $3 }')
 
+# limit_maxbytes = Number of bytes this server is permitted to use for storage.
+# bytes = Current number of bytes used by this server to store items.
+
 if [[ -z $limit_maxbytes ]] || [[ -z $bytes ]]; then
   echo "CRITICAL - 'limit_maxbytes' and 'bytes' are empty"
   exit 2
