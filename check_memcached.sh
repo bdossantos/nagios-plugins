@@ -61,6 +61,9 @@ if [[ $? -ne 0 ]] || [[ -z $output ]]; then
   exit 2
 fi
 
+# limit_maxbytes = Number of bytes this server is permitted to use for storage.
+# bytes = Current number of bytes used by this server to store items.
+# https://dev.mysql.com/doc/refman/5.7/en/ha-memcached-stats-general.html
 limit_maxbytes=$(echo "$output" | grep 'limit_maxbytes' | awk '{ gsub(/\r/, ""); print $3 }')
 bytes=$(echo "$output" | grep ' bytes ' | awk '{ gsub(/\r/, ""); print $3 }')
 get_hits=$(echo "$output" | grep 'get_hits' | awk '{ gsub(/\r/, ""); print $3 }')
