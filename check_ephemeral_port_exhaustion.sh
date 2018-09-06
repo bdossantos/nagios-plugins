@@ -2,7 +2,7 @@
 #
 # Check for ephemeral port exhaustion
 #
-# Usage: check_ephemeral_ports.sh [-H host] [-P port]
+# Usage: check_ephemeral_ports.sh [-w warning] [-c critical]
 #   -w, --warning WARNING       Warning treshold
 #   -c, --critical CRITICAL     Critical treshold
 #   -h, --help                  Display this screen
