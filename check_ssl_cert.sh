@@ -16,35 +16,35 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    -h | --host)
-      host=$2
-      shift
-      ;;
-    -p | --port)
-      port=$2
-      shift
-      ;;
-    -t | --timeout)
-      timeout=$2
-      shift
-      ;;
-    -w | --warning)
-      warn=$2
-      shift
-      ;;
-    -c | --critical)
-      crit=$2
-      shift
-      ;;
-    --help)
-      sed -n '2,12p' "$0" | tr -d '#'
-      exit 3;
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  -h | --host)
+    host=$2
+    shift
+    ;;
+  -p | --port)
+    port=$2
+    shift
+    ;;
+  -t | --timeout)
+    timeout=$2
+    shift
+    ;;
+  -w | --warning)
+    warn=$2
+    shift
+    ;;
+  -c | --critical)
+    crit=$2
+    shift
+    ;;
+  --help)
+    sed -n '2,12p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -57,19 +57,19 @@ crit=${crit:=7}
 
 if timeout "$timeout" \
   openssl s_client -servername "$host" -connect "${host}:${port}" \
-  < /dev/null 2>&1 \
-  | openssl x509 -text -in /dev/stdin \
-  | grep -q 'sha1WithRSAEncryption'; then
+  </dev/null 2>&1 |
+  openssl x509 -text -in /dev/stdin |
+  grep -q 'sha1WithRSAEncryption'; then
   echo 'CRITICAL - SSL Certificate is SHA1'
   exit 2
 fi
 
 expire=$(
   timeout "$timeout" \
-  openssl s_client -servername "$host" -connect "${host}:${port}" \
-  < /dev/null 2>&1 \
-  | openssl x509 -enddate -noout \
-  | cut -d '=' -f2
+    openssl s_client -servername "$host" -connect "${host}:${port}" \
+    </dev/null 2>&1 |
+    openssl x509 -enddate -noout |
+    cut -d '=' -f2
 )
 parsed_expire=$(date -d "$expire" +%s)
 today=$(date +%s)

@@ -15,31 +15,31 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --host | -h)
-      host=$2
-      shift
-      ;;
-    --port | -p)
-      port=$2
-      shift
-      ;;
-    --warning | -w)
-      warn=$2
-      shift
-      ;;
-    --critical | -c)
-      crit=$2
-      shift
-      ;;
-    --help | -H)
-      sed -n '2,11p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --host | -h)
+    host=$2
+    shift
+    ;;
+  --port | -p)
+    port=$2
+    shift
+    ;;
+  --warning | -w)
+    warn=$2
+    shift
+    ;;
+  --critical | -c)
+    crit=$2
+    shift
+    ;;
+  --help | -H)
+    sed -n '2,11p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -54,7 +54,10 @@ if [[ $warn -ge $crit ]]; then
   exit 3
 fi
 
-output=$( (echo 'stats'; echo 'quit';) | nc "$host" "$port")
+output=$( (
+  echo 'stats'
+  echo 'quit'
+) | nc "$host" "$port")
 
 if [[ $? -ne 0 ]] || [[ -z $output ]]; then
   echo "CRITICAL - timed out connecting to memcached on ${host}:${port}"
@@ -81,7 +84,7 @@ fi
 
 used=$((bytes * 100 / limit_maxbytes))
 hit_ratio=$(awk 'BEGIN { printf("%0.2f", ("'$get_hits'" / ("'$get_misses'" + "'$get_hits'")) * 100) }')
-status="${used}% used (${bytes} of ${limit_maxbytes}) bytes used, get hit ratio ${hit_ratio}%";
+status="${used}% used (${bytes} of ${limit_maxbytes}) bytes used, get hit ratio ${hit_ratio}%"
 
 if [[ $used -gt $crit ]]; then
   echo "CRITICAL - ${status}"

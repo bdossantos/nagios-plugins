@@ -16,35 +16,35 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --user | -u)
-      user=$2
-      shift
-      ;;
-    --password | -p)
-      password=$2
-      shift
-      ;;
-    --defaults-file | -f)
-      default_files=$2
-      shift
-      ;;
-    --warning | -w)
-      warning=$2
-      shift
-      ;;
-    --critical | -c)
-      critical=$2
-      shift
-      ;;
-    --help | -h)
-      sed -n '2,10p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --user | -u)
+    user=$2
+    shift
+    ;;
+  --password | -p)
+    password=$2
+    shift
+    ;;
+  --defaults-file | -f)
+    default_files=$2
+    shift
+    ;;
+  --warning | -w)
+    warning=$2
+    shift
+    ;;
+  --critical | -c)
+    critical=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,10p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -82,8 +82,9 @@ if [[ $? -ne 0 ]] || [[ -z $status ]]; then
 fi
 
 connected_thread=$(echo "$status" | awk '{ print $4 };')
-max_connections=$(mysql -N -s -r -e 'SHOW VARIABLES LIKE "max_connections";' | \
-  awk '{ print $2 };'
+max_connections=$(
+  mysql -N -s -r -e 'SHOW VARIABLES LIKE "max_connections";' |
+    awk '{ print $2 };'
 )
 
 if [[ $? -ne 0 ]]; then
@@ -95,7 +96,7 @@ elif [[ -z $connected_thread ]] || [[ -z $max_connections ]]; then
 fi
 
 used=$((connected_thread * 100 / max_connections))
-status="${status} - ${connected_thread} of ${max_connections} max_connections";
+status="${status} - ${connected_thread} of ${max_connections} max_connections"
 if [[ $used -gt $critical ]]; then
   echo "CRITICAL - ${status}"
   exit 2

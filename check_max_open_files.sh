@@ -13,23 +13,23 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --warning|-w)
-      warn=$2
-      shift
-      ;;
-    --critical|-c)
-      crit=$2
-      shift
-      ;;
-    --help|-h)
-      sed -n '2,9p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --warning | -w)
+    warn=$2
+    shift
+    ;;
+  --critical | -c)
+    crit=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,9p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -46,7 +46,7 @@ if [[ -z $opened_files ]] || [[ -z $max_open_files ]]; then
 fi
 
 percentage=$((opened_files * 100 / max_open_files))
-status="${percentage}% (${opened_files} of ${max_open_files}) open files";
+status="${percentage}% (${opened_files} of ${max_open_files}) open files"
 
 if [[ $percentage -gt $crit ]]; then
   echo "CRITICAL - ${status}"

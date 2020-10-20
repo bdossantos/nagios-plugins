@@ -12,19 +12,19 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    -l | --log)
-      backup_log=$2
-      shift
-      ;;
-    --help | -h)
-      sed -n '2,8p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  -l | --log)
+    backup_log=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,8p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done

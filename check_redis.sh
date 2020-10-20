@@ -15,23 +15,23 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --host | -h)
-      host=$2
-      shift
-      ;;
-    --port | -p)
-      port=$2
-      shift
-      ;;
-    --help | -H)
-      sed -n '2,11p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --host | -h)
+    host=$2
+    shift
+    ;;
+  --port | -p)
+    port=$2
+    shift
+    ;;
+  --help | -H)
+    sed -n '2,11p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -40,15 +40,15 @@ host=${host:=127.0.0.1}
 port=${port:=6379}
 
 output=$(echo 'info' | nc -w1 $host $port)
-if [[ $? -ne 0 ]] || [[ -z  $output ]]; then
+if [[ $? -ne 0 ]] || [[ -z $output ]]; then
   echo "CRITICAL - could not connect to redis on ${host}:${port}"
   exit 2
 fi
 
-used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}'|sed -e 's/\r//')
+used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}' | sed -e 's/\r//')
 instantaneous_ops_per_sec=$(echo "$output" | awk -F : '$1 == "instantaneous_ops_per_sec" {print $2}')
 
-if [[ -z $used_memory_human ]] || [[ -z  $instantaneous_ops_per_sec ]]; then
+if [[ -z $used_memory_human ]] || [[ -z $instantaneous_ops_per_sec ]]; then
   echo "CRITICAL - could not fetch redis stats on ${host}:${port}"
   exit 2
 fi
