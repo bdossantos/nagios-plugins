@@ -21,27 +21,27 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    -w | --warning)
-      warning_treshold=$2
-      shift
-      ;;
-    -c | --critical)
-      critical_treshold=$2
-      shift
-      ;;
-    -i | --interval)
-      interval=$2
-      shift
-      ;;
-    -h | --help)
-      sed -n '2,10p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  -w | --warning)
+    warning_treshold=$2
+    shift
+    ;;
+  -c | --critical)
+    critical_treshold=$2
+    shift
+    ;;
+  -i | --interval)
+    interval=$2
+    shift
+    ;;
+  -h | --help)
+    sed -n '2,10p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -64,7 +64,7 @@ min_valid_ts=$((now - interval))
 current_process_count=$(awk '/processes/ {print $2}' /proc/stat)
 
 if [[ ! -f $DATAFILE ]]; then
-  echo -e "$now\t$current_process_count" > $DATAFILE
+  echo -e "$now\t$current_process_count" >$DATAFILE
   echo "Missing $DATAFILE; creating"
   exit 0
 fi
@@ -85,10 +85,10 @@ while read ts process_count; do
   process_delta=$((current_process_count - process_count))
   ts_delta=$((now - ts))
   current_fork_rate=$((process_delta / ts_delta))
-  echo -e "$ts\t$process_count" >> $DATAFILE
-done < $DATAFILE.previous
+  echo -e "$ts\t$process_count" >>$DATAFILE
+done <$DATAFILE.previous
 
-echo -e "$now\t$current_process_count" >> $DATAFILE
+echo -e "$now\t$current_process_count" >>$DATAFILE
 output="fork rate is $current_fork_rate processes/second (based on the last $ts_delta seconds) | fork_rate=$current_fork_rate"
 
 if [[ $current_fork_rate -ge $critical_treshold ]]; then

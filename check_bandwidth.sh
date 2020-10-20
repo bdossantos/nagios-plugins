@@ -15,31 +15,31 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --interface | -i)
-      interface=$2
-      shift
-      ;;
-    --sleep | -s)
-      sleep=$2
-      shift
-      ;;
-    --warning | -w)
-      warning=$2
-      shift
-      ;;
-    --critical | -c)
-      critical=$2
-      shift
-      ;;
-    --help | -h)
-      sed -n '2,11p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --interface | -i)
+    interface=$2
+    shift
+    ;;
+  --sleep | -s)
+    sleep=$2
+    shift
+    ;;
+  --warning | -w)
+    warning=$2
+    shift
+    ;;
+  --critical | -c)
+    critical=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,11p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done

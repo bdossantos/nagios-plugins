@@ -14,19 +14,19 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --directory|-d)
-      directory=$2
-      shift
-      ;;
-    --help|-h)
-      sed -n '2,8p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --directory | -d)
+    directory=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,8p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -49,7 +49,7 @@ if ! touch "$FILE" 2>/dev/null; then
   exit 2
 fi
 
-if ! echo 'monitoring suck' > "$FILE" 2>/dev/null; then
+if ! echo 'monitoring suck' >"$FILE" 2>/dev/null; then
   echo "CRITICAL - Could not write into '${FILE}' file!"
   exit 2
 fi

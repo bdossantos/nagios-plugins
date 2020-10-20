@@ -13,23 +13,23 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --warning | -w)
-      warn=$2
-      shift
-      ;;
-    --critical | -c)
-      crit=$2
-      shift
-      ;;
-    --help | -h)
-      sed -n '2,9p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --warning | -w)
+    warn=$2
+    shift
+    ;;
+  --critical | -c)
+    crit=$2
+    shift
+    ;;
+  --help | -h)
+    sed -n '2,9p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done

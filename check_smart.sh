@@ -11,15 +11,15 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --help | -h)
-      sed -n '2,10p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --help | -h)
+    sed -n '2,10p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -40,8 +40,7 @@ unhealthy_disks=()
 healthy_disks=()
 
 disks=$(lsblk -nro NAME,TYPE | grep 'disk' | awk '{ print $1 }')
-for disk in $disks
-do
+for disk in $disks; do
   device="/dev/${disk}"
   smart=$(smartctl -i "$device")
 
@@ -50,8 +49,7 @@ do
   fi
 done
 
-for device in "${smart_available[@]}"
-do
+for device in "${smart_available[@]}"; do
   health=$(smartctl -a "$device")
   if echo "$health" | grep -q 'ATA Error Count:'; then
     unhealthy_disks=("${unhealthy_disks[@]}" "$device")
@@ -63,17 +61,26 @@ do
 done
 
 if [[ ${#unhealthy_disks[@]} -gt 0 ]]; then
-  output=$(IFS=, ; echo "${unhealthy_disks[*]}")
+  output=$(
+    IFS=,
+    echo "${unhealthy_disks[*]}"
+  )
   echo "CRITICAL - unhealthy disk(s) found : ${output}"
   exit 2
 fi
 
 if [[ ${#unknown_disks[@]} -gt 0 ]]; then
-  output=$(IFS=, ; echo "${unknown_disks[*]}")
+  output=$(
+    IFS=,
+    echo "${unknown_disks[*]}"
+  )
   echo "CRITICAL - unknown disk(s) found : ${output}"
   exit 2
 fi
 
-output=$(IFS=, ; echo "${healthy_disks[*]}")
+output=$(
+  IFS=,
+  echo "${healthy_disks[*]}"
+)
 echo "OK - disk(s) look healthy : ${output}"
 exit 0

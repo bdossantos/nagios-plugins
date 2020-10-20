@@ -20,39 +20,39 @@
 
 while [[ -n "$1" ]]; do
   case $1 in
-    --host | -h)
-      host=$2
-      shift
-      ;;
-    --port | -p)
-      port=$2
-      shift
-      ;;
-    --warning | -w)
-      warning=$2
-      shift
-      ;;
-    --critical | -c)
-      critical=$2
-      shift
-      ;;
-    --status-page | -s)
-      status_page=$2
-      shift
-      ;;
-    --secure | -S)
-      secure=$2
-      shift
-      ;;
-    --help | -H)
-      sed -n '2,13p' "$0" | tr -d '#'
-      exit 3
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      exec "$0" --help
-      exit 3
-      ;;
+  --host | -h)
+    host=$2
+    shift
+    ;;
+  --port | -p)
+    port=$2
+    shift
+    ;;
+  --warning | -w)
+    warning=$2
+    shift
+    ;;
+  --critical | -c)
+    critical=$2
+    shift
+    ;;
+  --status-page | -s)
+    status_page=$2
+    shift
+    ;;
+  --secure | -S)
+    secure=$2
+    shift
+    ;;
+  --help | -H)
+    sed -n '2,13p' "$0" | tr -d '#'
+    exit 3
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    exec "$0" --help
+    exit 3
+    ;;
   esac
   shift
 done
@@ -82,14 +82,16 @@ ${host}:${port}/${status_page}"
   exit 2
 fi
 
-active_processes=$(echo "$status" \
-  | grep -w 'active processes:' \
-  | head -n 1 \
-  | awk '{ print $3 }'
+active_processes=$(
+  echo "$status" |
+    grep -w 'active processes:' |
+    head -n 1 |
+    awk '{ print $3 }'
 )
-total_processes=$(echo "$status" \
-  | grep 'total processes' \
-  | awk '{ print $3 }'
+total_processes=$(
+  echo "$status" |
+    grep 'total processes' |
+    awk '{ print $3 }'
 )
 
 if [[ -z $active_processes ]] || [[ -z $total_processes ]]; then
@@ -99,7 +101,7 @@ fi
 
 used=$((active_processes * 100 / total_processes))
 status="${used}% of process pool is used (${active_processes} active processes \
-on ${total_processes})";
+on ${total_processes})"
 
 if [[ $used -gt $critical ]]; then
   echo "CRITICAL - ${status}"
