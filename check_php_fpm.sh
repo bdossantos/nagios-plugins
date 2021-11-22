@@ -9,6 +9,8 @@
 #   -c, --critical CRITICAL     Critical value (percent)
 #   -S, --secure                Use HTTPS instead of HTTP
 #   -s, --status-page           Name of the php-fpm status page
+#   -U, --username              Basic HTTP AUTH username
+#   -P, --password              Basic HTTP AUTH password
 #   -H, --help                  Display this screen
 #
 # This plugin is based on this work :
@@ -44,6 +46,14 @@ while [[ -n "$1" ]]; do
     secure=$2
     shift
     ;;
+  --http-user | -U)
+    user=$2
+    shift
+    ;;
+  --http-password | -P)
+    password=$2
+    shift
+    ;;
   --help | -H)
     sed -n '2,13p' "$0" | tr -d '#'
     exit 3
@@ -58,11 +68,16 @@ while [[ -n "$1" ]]; do
 done
 
 host=${host:=127.0.0.1}
-port=${port:=80}
 secure=${secure:=0}
 status_page=${status_page:='status'}
 warning=${warning:=90}
 critical=${critical:=95}
+
+if [[ ! -z "$user" && ! -x "$password" ]]; then
+  auth_args=(--http-user="$user" --http-password="$password")
+else
+ auth_args=('' '')
+fi
 
 if [[ $warning -ge $critical ]]; then
   echo "UNKNOWN - warning ($warning) can't be greater than critical ($critical)"
@@ -70,15 +85,19 @@ if [[ $warning -ge $critical ]]; then
 fi
 
 if [[ "$secure" = 1 ]]; then
-  status=$(wget --no-check-certificate -q -t 3 -T 3 \
-    "https://${host}:${port}/${status_page}" -O -)
+  port=${port:=443}
+  url="https://${host}:${port}/${status_page}"
+  wget_opts='--no-check-certificate'
 else
-  status=$(wget -q -t 3 -T 3 "http://${host}:${port}/${status_page}" -O -)
+  port=${port:=80}
+  url="http://${host}:${port}/${status_page}"
+  wget_opts=''
 fi
 
+status=$(wget $wget_opts -q -t 3 -T 3 ${auth_args[@]} $url -O -)
+
 if [[ $? -ne 0 ]] || [[ -z $status ]]; then
-  echo "CRITICAL - could not fetch php-fpm pool status page \
-${host}:${port}/${status_page}"
+  echo "CRITICAL - could not fetch php-fpm pool status page $url"
   exit 2
 fi
 
